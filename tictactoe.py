@@ -33,8 +33,8 @@ def playerInput(board,sign=Human):
     spot = []
     availabileSpots = availabile(board)
 
-    i = int(input("Input row : "))
-    j = int(input("Input column : "))
+    i = int(input("Input row (0 to 2) : "))
+    j = int(input("Input column (0 to 2) : "))
     spot = [i,j]
     if spot in availabileSpots:
         board[i][j] = sign 
