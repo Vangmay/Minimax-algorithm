@@ -1,18 +1,18 @@
-import random
-import copy 
+import os
 board = [
     [' ',' ',' '],
     [' ',' ',' '],
     [' ',' ',' ']
 ]
+board2 = [
+    [' ','O',' '],
+    [' ','X',' '],
+    [' ',' ',' ']
+]
 
-Human = 'X'
-AI = 'O'
+Human = 'O'
+AI = 'X'
 
-#Scores from X's perspective
-Win = 1
-Draw = 0
-Lose = -1
 
 def displayBoard(board):
     print('--------------------------')
@@ -30,7 +30,6 @@ def availabile(board):
     return empty
 
 def playerInput(board,sign=Human):
-    print('Executing playerInput')
     spot = []
     availabileSpots = availabile(board)
 
@@ -45,18 +44,16 @@ def playerInput(board,sign=Human):
     return(board)
 # playerInput(board,'X')
 def RobotInput(board,sign=AI):
-    print('Executing RobotInput')
     bestScore = -99999999
     bestMove = []
-    availabileSpots = availabile(board)
     for i in range(0,len(board)):
         for j in range(0,len(board[0])):
             if (board[i][j] == ' '):
                 board[i][j] = AI 
-                score = minimax(board, 0, False)
+                score = minimax(board,0,False)
                 board[i][j] = ' '
                 if(score > bestScore):
-                    bestScore = score;
+                    bestScore = score
                     bestMove = [i,j]
     board[bestMove[0]][bestMove[1]] = AI 
     return board 
@@ -65,13 +62,14 @@ def RobotInput(board,sign=AI):
     # board[move[0]][move[1]] = sign
 #Minimax-----------------------
 def minimax(board, depth, isMaximizing):
-    print("Executing Minimax")
     scores = {'X':1 , 'O':-1 , 'Draw':0}
     result = checkWinner(board)
-    if (result != ''):
-        score = scores[result]
-        return score; 
-    if isMaximizing:
+    # print('result, ', result)
+    if (result == 'X' or result == 'O' or result == 'Draw'):
+        WinScore = scores[result]
+        return WinScore
+
+    if isMaximizing == True:
         bestScore = -9999999
         for i in range(0,len(board)):
             for j in range(0,len(board[0])):
@@ -82,8 +80,8 @@ def minimax(board, depth, isMaximizing):
                     if score > bestScore:
                         bestScore = score
         return bestScore
-    else:
-        bestScore = -9999999
+    if isMaximizing == False: 
+        bestScore = 9999999
         for i in range(0,len(board)):
             for j in range(0,len(board[0])):
                 if board[i][j] == ' ':
@@ -91,14 +89,13 @@ def minimax(board, depth, isMaximizing):
                     score = minimax(board,depth+1,True)
                     board[i][j] = ' '
                     if score < bestScore:
-                        bestScore = score 
+                        bestScore = score
         return bestScore 
     
-#Minimax-----------------------
+# Minimax-----------------------
     
 
 def checkWinner(board):
-    print('Executing checkwinner')
     win = ''
     # Horizontal
     for i in range(0,3):
@@ -116,22 +113,17 @@ def checkWinner(board):
     if(board[0][2] == board[1][1] and board[0][2] == board[2][0] and board[0][2] != ' '):
         win = board[0][2]
         return win 
-    if availabile(board) == [] and win == ' ':
-        return 'Draw'
+    if availabile(board) == [] and win == '':
+        win = 'Draw'
     return win 
 
-
-#Display board
-#Ask for input from human and put it
-#Check if win
-#Ask for input from robot and put it
-#Check if win
-#Repeat until win doesn't return anything
-
 def driver(board):
-    player = 'Human'
-    displayBoard(board)
+    player = 'Robot'
     while checkWinner(board) == '':
+        os.system('CLS')
+        if player == 'Robot':
+            print('The AI is moving...')
+        displayBoard(board)
         if player == 'Human':
             playerInput(board)
             checkWinner(board)
