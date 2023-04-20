@@ -20,7 +20,7 @@ def displayBoard(board):
     print(board[1][0] ,'|', board[1][1] ,'|', board[1][2]) 
     print(board[2][0] ,'|', board[2][1] ,'|', board[2][2]) 
     print('--------------------------')
-def availabile(board):
+def available(board):
     empty = []
     for i in range(0,len(board)):
         for j in range(0,len(board[i])):
@@ -31,7 +31,7 @@ def availabile(board):
 
 def playerInput(board,sign=Human):
     spot = []
-    availabileSpots = availabile(board)
+    availabileSpots = available(board)
 
     i = int(input("Input row (0 to 2) : "))
     j = int(input("Input column (0 to 2) : "))
@@ -113,7 +113,7 @@ def checkWinner(board):
     if(board[0][2] == board[1][1] and board[0][2] == board[2][0] and board[0][2] != ' '):
         win = board[0][2]
         return win 
-    if availabile(board) == [] and win == '':
+    if available(board) == [] and win == '':
         win = 'Draw'
     return win 
 
